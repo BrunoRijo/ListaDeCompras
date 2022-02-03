@@ -2,16 +2,37 @@ package com.example.listadecompras
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listadecompras.model.ItemMercado
 
 class MainActivity : AppCompatActivity() {
+
+    private var adapter = ListaAdapter()
+    private val listadeCompras : RecyclerView by lazy{
+        findViewById(R.id.rv_principal)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val listaDeCompras = Dados_ListadeCompras(this).getListaDeCompras()
+        setBindView()
+        updateList()
+    }
 
-        val recyclerView: RecyclerView = findViewById(R.id.rv_principal)
-        recyclerView.adapter = ListaAdapter(listaDeCompras)
+    private fun setBindView() {
+        listadeCompras.adapter = adapter
+        listadeCompras.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun updateList(){
+        adapter.updateList(
+            arrayListOf(
+                ItemMercado("Arroz", 10),
+                ItemMercado("Feijão", 10),
+                ItemMercado("Batata", 10)
+            )
+        )
     }
 }

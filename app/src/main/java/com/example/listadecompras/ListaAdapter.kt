@@ -9,20 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listadecompras.model.ItemMercado
 
-class ListaAdapter (val listaDeCompras: Array<String>) :
-    RecyclerView.Adapter<ListaAdapter.ListaDeComprasViewHolder>()
+class ListaAdapter: RecyclerView.Adapter<ListaAdapter.ListaDeComprasViewHolder>()
 {
-    class ListaDeComprasViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView){
-
-        private var nomeItem: TextView = itemView.findViewById(R.id.tv_item)
-
-        fun bind(nome: String){
-            nomeItem.text = nome
-
-        }
-    }
+    private val listaDeCompras : MutableList<ItemMercado> = mutableListOf()
 
     //Retorna uma nova ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaDeComprasViewHolder {
@@ -31,12 +22,30 @@ class ListaAdapter (val listaDeCompras: Array<String>) :
         return ListaDeComprasViewHolder(view)
     }
 
-    //Coloca os dados na posição correta da lista.
+    //Coloca os do item da lista na itemViews
     override fun onBindViewHolder(holder: ListaDeComprasViewHolder, position: Int) {
         holder.bind(listaDeCompras[position])
     }
 
-    override fun getItemCount(): Int {
-        return listaDeCompras.size
+    override fun getItemCount() = listaDeCompras.size
+
+    //Função de passa uma lista de outra clase para dentro do adapter
+    fun updateList(new_list: List<ItemMercado>){
+        listaDeCompras.clear()
+        listaDeCompras.addAll(new_list)
+        notifyDataSetChanged()
     }
+
+    class ListaDeComprasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
+        private var nomeItem: TextView = itemView.findViewById(R.id.tv_item)
+        private var qtdItem: TextView = itemView.findViewById(R.id.tv_qtdd)
+
+        fun bind(itemMercado : ItemMercado){
+            nomeItem.text = itemMercado.name
+            qtdItem.text = itemMercado.qtd.toString()
+        }
+    }
+
+
 }
