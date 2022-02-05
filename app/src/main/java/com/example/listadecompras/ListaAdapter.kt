@@ -15,6 +15,7 @@ class ListaAdapter: RecyclerView.Adapter<ListaAdapter.ListaDeComprasViewHolder>(
 {
     private val listaDeCompras : MutableList<ItemMercado> = mutableListOf()
 
+
     //Retorna uma nova ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaDeComprasViewHolder {
         val view = LayoutInflater.from(parent.context)
