@@ -1,5 +1,6 @@
 package com.example.listadecompras
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,12 +13,13 @@ import android.widget.Toast
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listadecompras.interfaces.ClickItemMercadoListener
 import com.example.listadecompras.model.ItemMercado
 import androidx.appcompat.app.ActionBarDrawerToggle as ActionBarDrawerToggle1
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ClickItemMercadoListener {
 
-    private var adapter = ListaAdapter()
+    private var adapter = ListaAdapter(this)
     private val listadeCompras : RecyclerView by lazy{
         findViewById(R.id.rv_principal)
     }
@@ -30,14 +32,12 @@ class MainActivity : AppCompatActivity() {
         setBindView()
         setListeners()
         updateList()
-
     }
 
     private fun initDrawer(){
         val drawable_Layout = findViewById<View>(R.id.drawer_layout) as DrawerLayout
         val toolbar = findViewById<Toolbar>(R.id.toolbar_main) as Toolbar
         setSupportActionBar(toolbar)
-        showToast("Entrou na função initdrawer")
 
         val toogle = ActionBarDrawerToggle1(this, drawable_Layout, toolbar, R.string.abrir, R.string.fechar)
         drawable_Layout.addDrawerListener(toogle)
@@ -85,7 +85,12 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             else -> super.onOptionsItemSelected(item)
-
         }
+    }
+
+    override fun clickItemMercado(item: ItemMercado) {
+        val intent = Intent(this, addItem_activity::class.java)
+        intent.putExtra("EXTRA_ITEM", item)
+        startActivity(intent)
     }
 }

@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.listadecompras.interfaces.ClickItemMercadoListener
 import com.example.listadecompras.model.ItemMercado
 
-class ListaAdapter: RecyclerView.Adapter<ListaAdapter.ListaDeComprasViewHolder>()
+class ListaAdapter(var listener:ClickItemMercadoListener)
+    : RecyclerView.Adapter<ListaAdapter.ListaDeComprasViewHolder>()
 {
     private val listaDeCompras : MutableList<ItemMercado> = mutableListOf()
 
@@ -20,7 +22,7 @@ class ListaAdapter: RecyclerView.Adapter<ListaAdapter.ListaDeComprasViewHolder>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListaDeComprasViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_layout, parent, false)
-        return ListaDeComprasViewHolder(view)
+        return ListaDeComprasViewHolder(view, listaDeCompras, listener)
     }
 
     //Coloca os do item da lista na itemViews
@@ -37,10 +39,20 @@ class ListaAdapter: RecyclerView.Adapter<ListaAdapter.ListaDeComprasViewHolder>(
         notifyDataSetChanged()
     }
 
-    class ListaDeComprasViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ListaDeComprasViewHolder(
+        itemView: View,
+        list: List<ItemMercado>,
+        var listener: ClickItemMercadoListener) : RecyclerView.ViewHolder(itemView){
 
         private var nomeItem: TextView = itemView.findViewById(R.id.tv_item)
         private var qtdItem: TextView = itemView.findViewById(R.id.tv_qtdd)
+
+        //Tornar o meu item clicável e com uma ação
+        init{
+            itemView.setOnClickListener(){
+                listener.clickItemMercado(list[adapterPosition])
+            }
+        }
 
         fun bind(itemMercado : ItemMercado){
             nomeItem.text = itemMercado.name
