@@ -5,5 +5,4 @@ import com.example.listadecompras.model.ItemMercado
 interface ClickItemMercadoListener {
 
     fun clickItemMercado(item: ItemMercado)
-
 }
